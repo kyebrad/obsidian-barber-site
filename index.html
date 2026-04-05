@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obsidian — Sharp edges. Clean lines. No compromise.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+/* ── Reset & Root ─────────────────────────────────────────────── */
+:root {
+  --primary:    #C9A84C;
+  --accent:     #E8C97A;
+  --bg:         #0A0A0A;
+  --surface:    #111111;
+  --text:       #F0EDE6;
+  --muted:      #5a5a5e;
+  --border:     #1A1A1A;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── Mesh Canvas — Fixed Full-Page Background (z-index: 0) ─────── */
+#meshCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* All page sections sit above the mesh */
+nav,
+section,
+footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Navigation ──────────────────────────────────────────────── */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  height: 72px;
+  background: rgba(10, 10, 10, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.08);
+}
+
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-logo-mark {
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid var(--primary);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.nav-logo-mark::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  background: var(--primary);
+  transform: rotate(0deg);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: var(--text);
+}
+
+.nav-cta {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bg) !important;
+  background: var(--primary);
+  padding: 10px 24px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease !important;
+}
+
+.nav-cta:hover {
+  background: var(--accent) !important;
+  color: var(--bg) !important;
+  transform: translateY(-1px);
+}
+
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+  background: none;
+  border: none;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--text);
+  transition: all 0.25s ease;
+}
+
+/* ── Curtain Hero Section ─────────────────────────────────────── */
+.curtain-section {
+  position: relative;
+  height: 300vh;
+}
+
+.curtain-sticky {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Curtain panels */
+.curtain-left,
+.curtain-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: var(--bg);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+}
+
+.curtain-left {
+  left: 0;
+  justify-content: flex-end;
+  padding-right: 48px;
+  border-right: 1px solid var(--border);
+}
+
+.curtain-right {
+  right: 0;
+  justify-content: flex-start;
+  padding-left: 48px;
+  border-left: 1px solid var(--border);
+}
+
+.curtain-word {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(48px, 9vw, 120px);
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: var(--text);
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.curtain-word em {
+  font-style: italic;
+  color: var(--primary);
+}
+
+/* Hero content behind curtain */
+.curtain-content {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px;
+  background: var(--bg);
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+
+.hero-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(52px, 9vw, 120px);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 24px;
+  max-width: 800px;
+}
+
+.hero-headline em {
+  font-style: italic;
+  color: var(--primary);
+}
+
+.hero-subtext {
+  font-size: clamp(15px, 1.8vw, 18px);
+  color: var(--muted);
+  max-width: 48ch;
+  line-height: 1.7;
+  margin-bottom: 40px;
+  font-weight: 300;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 40px;
+  background: var(--primary);
+  color: var(--bg);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  transition: background 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-cta:hover {
+  background: var(--accent);
+  transform: translateY(-2px);
+}
+
+.hero-cta-arrow {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.2s ease;
+}
+
+.hero-cta:hover .hero-cta-arrow {
+  transform: translateX(3px);
+}
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.4;
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+
+.hero-scroll-hint span {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hero-scroll-hint svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--muted);
+  fill: none;
+  stroke-width: 1.5;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(5px); }
+}
+
+/* ── Services Section ─────────────────────────────────────────── */
+.services-section {
+  padding: 120px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 72px;
+}
+
+.section-eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 44ch;
+  margin: 0 auto;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* Spotlight grid — faithful to module source */
+.spot-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.spot-card {
+  background: var(--surface);
+  padding: 56px 48px;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  transition: background 0.3s ease;
+}
+
+/* Spotlight radial glow — exact JS-driven CSS var approach from source */
+.spot-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 0;
+  background: radial-gradient(
+    circle 220px at var(--mx, 50%) var(--my, 50%),
+    rgba(201, 168, 76, 0.10),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.spot-card:hover::before {
+  opacity: 1;
+}
+
+.spot-card-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px;
+  font-weight: 300;
+  color: rgba(201, 168, 76, 0.10);
+  line-height: 1;
+  margin-bottom: 20px;
+  letter-spacing: 0.02em;
+}
+
+.spot-card-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 12px;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+.spot-card-desc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 32px;
+  font-weight: 300;
+  max-width: 30ch;
+}
+
+.spot-card-price {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.spot-card-price .currency {
+  font-size: 14px;
+  color: var(--primary);
+  font-weight: 500;
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+.spot-card-price .amount {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px;
+  font-weight: 400;
+  color: var(--primary);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.spot-card-divider {
+  position: absolute;
+  bottom: 0;
+  left: 48px;
+  right: 48px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+/* ── About Section ────────────────────────────────────────────── */
+.about-section {
+  padding: 160px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.about-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.about-label::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--primary);
+}
+
+.about-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 4.5vw, 64px);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 32px;
+  letter-spacing: -0.01em;
+}
+
+.about-heading em {
+  font-style: italic;
+  color: var(--primary);
+}
+
+.about-body {
+  font-size: 17px;
+  color: var(--muted);
+  line-height: 1.8;
+  font-weight: 300;
+  max-width: 42ch;
+  margin-bottom: 40px;
+}
+
+.about-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.3);
+  padding-bottom: 3px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.about-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.about-visual {
+  position: relative;
+}
+
+.about-visual-inner {
+  aspect-ratio: 3 / 4;
+  background: var(--surface);
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+}
+
+.about-visual-noise {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(201, 168, 76, 0.07) 0%, transparent 70%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255,255,255,0.015) 2px,
+      rgba(255,255,255,0.015) 4px
+    );
+}
+
+.about-visual-quote {
+  position: relative;
+  z-index: 2;
+  padding: 40px;
+  border-top: 1px solid var(--border);
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(12px);
+  width: 100%;
+}
+
+.about-visual-quote blockquote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.about-visual-quote cite {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+  font-style: normal;
+}
+
+.about-stat-row {
+  display: flex;
+  gap: 40px;
+  margin-top: 48px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+
+.about-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.about-stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px;
+  font-weight: 400;
+  color: var(--primary);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.about-stat-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ── Booking CTA Section ──────────────────────────────────────── */
+.booking-section {
+  padding: 0 48px 160px;
+}
+
+.booking-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 100px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.booking-glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+
+.booking-inner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.booking-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+
+.booking-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 300;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.booking-headline em {
+  font-style: italic;
+  color: var(--primary);
+}
+
+.booking-sub {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 40ch;
+  margin: 0 auto 48px;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.booking-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 52px;
+  background: var(--primary);
+  color: var(--bg);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  transition: background 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+
+.booking-cta:hover {
+  background: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 40px rgba(201, 168, 76, 0.25);
+}
+
+.booking-cta svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.2s ease;
+}
+
+.booking-cta:hover svg {
+  transform: translateX(3px);
+}
+
+/* ── Footer ───────────────────────────────────────────────────── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 60px 48px 40px;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 36px;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.footer-tagline {
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.footer-nav {
+  display: flex;
+  gap: 64px;
+}
+
+.footer-nav-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer-nav-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.footer-nav-col a {
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-weight: 300;
+}
+
+.footer-nav-col a:hover {
+  color: var(--text);
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-copy {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.footer-copy span {
+  color: var(--primary);
+}
+
+.footer-rule {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .nav {
+    padding: 0 24px;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    background: rgba(10, 10, 10, 0.97);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 14px 28px;
+    font-size: 13px;
+  }
+
+  .nav-cta {
+    margin: 8px 28px 4px;
+    display: inline-block;
+  }
+
+  .nav-hamburger {
+    display: flex;
+  }
+
+  .curtain-word {
+    font-size: clamp(36px, 8vw, 72px);
+  }
+
+  .services-section {
+    padding: 80px 24px;
+  }
+
+  .spot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .spot-card {
+    padding: 40px 28px;
+  }
+
+  .about-section {
+    grid-template-columns: 1fr;
+    padding: 100px 24px;
+    gap: 48px;
+  }
+
+  .about-visual {
+    display: none;
+  }
+
+  .about-stat-row {
+    gap: 28px;
+  }
+
+  .booking-section {
+    padding: 0 24px 100px;
+  }
+
+  .booking-inner {
+    padding: 72px 32px;
+  }
+
+  .footer {
+    padding: 48px 24px 32px;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .footer-nav {
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .curtain-left {
+    padding-right: 20px;
+  }
+
+  .curtain-right {
+    padding-left: 20px;
+  }
+
+  .curtain-word {
+    font-size: clamp(28px, 9vw, 56px);
+  }
+
+  .hero-cta {
+    padding: 14px 28px;
+  }
+
+  .section-header {
+    margin-bottom: 48px;
+  }
+
+  .booking-inner {
+    padding: 56px 24px;
+  }
+
+  .about-stat-row {
+    flex-wrap: wrap;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Mesh Gradient Canvas (fixed, z-index: 0) ─────────────────── -->
+<canvas id="meshCanvas"></canvas>
+
+<!-- ── Navigation ────────────────────────────────────────────────── -->
+<nav class="nav" id="mainNav">
+  <a href="#" class="nav-logo" aria-label="Obsidian Barbershop">
+    <div class="nav-logo-mark" aria-hidden="true"></div>
+    Obsidian
+  </a>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#book" class="nav-cta">Book</a></li>
+  </ul>
+
+  <button class="nav-hamburger" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- ── Curtain Hero ────────────────────────────────────────────────── -->
+<section class="curtain-section" id="home">
+  <div class="curtain-sticky">
+
+    <!-- Hero content revealed behind curtain -->
+    <div class="curtain-content">
+      <p class="hero-eyebrow">Est. MMXX — Downtown</p>
+      <h1 class="hero-headline">Refined.<br><em>Every Time.</em></h1>
+      <p class="hero-subtext">Step into a space where minimalism meets mastery, and every visit leaves you sharper than before.</p>
+      <a href="#book" class="hero-cta">
+        Book Your Cut
+        <svg class="hero-cta-arrow" viewBox="0 0 24 24" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+
+      <div class="hero-scroll-hint" aria-hidden="true">
+        <span>Scroll</span>
+        <svg viewBox="0 0 24 24">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <polyline points="19 12 12 19 5 12"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Curtain panels (JS animates these) -->
+    <div class="curtain-left" id="cLeft">
+      <span class="curtain-word">Ob<em>sid</em></span>
+    </div>
+    <div class="curtain-right" id="cRight">
+      <span class="curtain-word">ian</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Services / Spotlight Grid ──────────────────────────────────── -->
+<section class="services-section" id="services">
+  <div class="section-header">
+    <div class="section-eyebrow">Our Services</div>
+    <h2 class="section-title">Crafted for<br>Precision</h2>
+    <p class="section-subtitle">Every service is performed with surgical focus. No rush, no shortcuts.</p>
+  </div>
+
+  <div class="spot-grid" id="spotGrid">
+
+    <div class="spot-card">
+      <div class="spot-card-num">01</div>
+      <h3 class="spot-card-name">Signature Cut</h3>
+      <p class="spot-card-desc">A consultation-led cut tailored to your face, lifestyle, and vision. Finished with a warm towel and premium pomade.</p>
+      <div class="spot-card-price">
+        <span class="currency">$</span>
+        <span class="amount">45</span>
+      </div>
+    </div>
+
+    <div class="spot-card">
+      <div class="spot-card-num">02</div>
+      <h3 class="spot-card-name">Hot Towel Shave</h3>
+      <p class="spot-card-desc">A ritual close shave with pre-shave oil, hot towels, and a straight razor. The kind of shave you remember.</p>
+      <div class="spot-card-price">
+        <span class="currency">$</span>
+        <span class="amount">38</span>
+      </div>
+    </div>
+
+    <div class="spot-card">
+      <div class="spot-card-num">03</div>
+      <h3 class="spot-card-name">Cut &amp; Shave Combo</h3>
+      <p class="spot-card-desc">The full experience. Signature cut followed by a hot towel straight-razor shave. Reserved for those who settle for nothing less.</p>
+      <div class="spot-card-price">
+        <span class="currency">$</span>
+        <span class="amount">75</span>
+      </div>
+    </div>
+
+    <div class="spot-card">
+      <div class="spot-card-num">04</div>
+      <h3 class="spot-card-name">Beard Sculpt</h3>
+      <p class="spot-card-desc">Line work, shaping, and conditioning. Whether you want it clean and angular or full and structured — precision defines the result.</p>
+      <div class="spot-card-price">
+        <span class="currency">$</span>
+        <span class="amount">30</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── About Section ──────────────────────────────────────────────── -->
+<section class="about-section" id="about">
+  <div class="about-text">
+    <p class="about-label">Our Story</p>
+    <h2 class="about-heading">Built for<br>those who care<br><em>deeply</em></h2>
+    <p class="about-body">Obsidian was built for those who treat grooming as a ritual, not a routine. Every cut is deliberate, every line precise. We believe the chair you sit in should reflect the standards you hold yourself to.</p>
+    <a href="#book" class="about-link">
+      Reserve your seat
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+
+    <div class="about-stat-row">
+      <div class="about-stat">
+        <span class="about-stat-num">5+</span>
+        <span class="about-stat-label">Years open</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat-num">3K+</span>
+        <span class="about-stat-label">Satisfied clients</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat-num">100%</span>
+        <span class="about-stat-label">By appointment</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-visual" aria-hidden="true">
+    <div class="about-visual-inner">
+      <div class="about-visual-noise"></div>
+      <div class="about-visual-quote">
+        <blockquote>"A great barber doesn't just cut hair — they read the room and leave you looking like the best version of yourself."</blockquote>
+        <cite>— The Obsidian Standard</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Booking CTA ────────────────────────────────────────────────── -->
+<section class="booking-section" id="book">
+  <div class="booking-inner">
+    <div class="booking-glow" aria-hidden="true"></div>
+    <p class="booking-eyebrow">Appointments Open Now</p>
+    <h2 class="booking-headline">Your next cut<br><em>starts here</em></h2>
+    <p class="booking-sub">Select your service, choose your time, and show up ready. We handle the rest.</p>
+    <a href="#" class="booking-cta">
+      Book Your Cut
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="footer-logo">Obsidian</a>
+        <p class="footer-tagline">"Sharp edges. Clean lines. No compromise."</p>
+      </div>
+
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <div class="footer-nav-col">
+          <p class="footer-nav-label">Navigate</p>
+          <a href="#">Home</a>
+          <a href="#services">Services</a>
+          <a href="#about">About</a>
+          <a href="#book">Book</a>
+        </div>
+        <div class="footer-nav-col">
+          <p class="footer-nav-label">Visit</p>
+          <a href="#">Find Us</a>
+          <a href="#">Hours</a>
+          <a href="#">Contact</a>
+          <a href="#">Gift Cards</a>
+        </div>
+      </nav>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 <span>Obsidian</span>. All rights reserved.</p>
+      <p class="footer-rule">By appointment only &mdash; Obsidian Barbershop</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ── Scripts ────────────────────────────────────────────────────── -->
+<script>
+/* ─────────────────────────────────────────────────────────────────
+   MODULE 1: Mesh Gradient Background
+   Fixed canvas fills the entire viewport as the bottom-most layer.
+   Faithful to mesh-gradient.html initMesh() — colors tuned for
+   Obsidian brand palette (gold/warm tones, very subtle).
+   ───────────────────────────────────────────────────────────────── */
+(function () {
+  function initMesh(canvas, colors, speed) {
+    var ctx = canvas.getContext('2d');
+    var blobs = colors.map(function (c, i) {
+      return {
+        x: Math.random(),
+        y: Math.random(),
+        vx: (Math.random() - 0.5) * speed,
+        vy: (Math.random() - 0.5) * speed,
+        r: 0.3 + Math.random() * 0.2,
+        color: c
+      };
+    });
+
+    function resize() {
+      canvas.width  = window.innerWidth  * (window.devicePixelRatio || 1);
+      canvas.height = window.innerHeight * (window.devicePixelRatio || 1);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function draw() {
+      var w = canvas.width, h = canvas.height;
+      ctx.fillStyle = '#0A0A0A';
+      ctx.fillRect(0, 0, w, h);
+      blobs.forEach(function (b) {
+        b.x += b.vx / w;
+        b.y += b.vy / h;
+        if (b.x < -0.2 || b.x > 1.2) b.vx *= -1;
+        if (b.y < -0.2 || b.y > 1.2) b.vy *= -1;
+        var grd = ctx.createRadialGradient(
+          b.x * w, b.y * h, 0,
+          b.x * w, b.y * h, b.r * Math.max(w, h)
+        );
+        grd.addColorStop(0, b.color);
+        grd.addColorStop(1, 'transparent');
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, w, h);
+        ctx.globalCompositeOperation = 'source-over';
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }
+
+  initMesh(
+    document.getElementById('meshCanvas'),
+    [
+      'rgba(201, 168, 76,  0.18)',  // gold — brand primary
+      'rgba(232, 201, 122, 0.09)',  // accent gold, softer
+      'rgba(90,  90,  94,  0.12)',  // warm dark
+      'rgba(180, 140, 60,  0.08)'   // deep gold
+    ],
+    0.35
+  );
+})();
+
+
+/* ─────────────────────────────────────────────────────────────────
+   MODULE 2: Curtain Reveal
+   Faithful port of curtain-reveal.html — GSAP ScrollTrigger drives
+   left panel to xPercent:-100 and right panel to xPercent:100 as
+   the curtain-section scrolls past.
+   ───────────────────────────────────────────────────────────────── */
+(function () {
+  gsap.registerPlugin(ScrollTrigger);
+
+  var s = document.querySelector('.curtain-section');
+
+  gsap.to('#cLeft', {
+    xPercent: -100,
+    ease: 'power2.inOut',
+    scrollTrigger: {
+      trigger: s,
+      start: 'top top',
+      end: '60% top',
+      scrub: 0.5
+    }
+  });
+
+  gsap.to('#cRight', {
+    xPercent: 100,
+    ease: 'power2.inOut',
+    scrollTrigger: {
+      trigger: s,
+      start: 'top top',
+      end: '60% top',
+      scrub: 0.5
+    }
+  });
+})();
+
+
+/* ─────────────────────────────────────────────────────────────────
+   MODULE 3: Spotlight Border Cards
+   Faithful port of spotlight-border.html — mousemove on the grid
+   updates --mx / --my CSS vars on each card so the ::before
+   radial-gradient follows the cursor across the unified grid.
+   ───────────────────────────────────────────────────────────────── */
+(function () {
+  var grid = document.getElementById('spotGrid');
+  if (!grid) return;
+
+  grid.addEventListener('mousemove', function (e) {
+    var cards = grid.querySelectorAll('.spot-card');
+    cards.forEach(function (c) {
+      var r = c.getBoundingClientRect();
+      c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      c.style.setProperty('--my', (e.clientY - r.top)  + 'px');
+    });
+  });
+})();
+
+
+/* ─────────────────────────────────────────────────────────────────
+   Nav: hamburger toggle + transparent-on-scroll behaviour
+   ───────────────────────────────────────────────────────────────── */
+(function () {
+  var toggle = document.getElementById('navToggle');
+  var links  = document.getElementById('navLinks');
+
+  if (toggle && links) {
+    toggle.addEventListener('click', function () {
+      var open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open.toString());
+      var bars = toggle.querySelectorAll('span');
+      if (open) {
+        bars[0].style.transform = 'translateY(6.5px) rotate(45deg)';
+        bars[1].style.opacity   = '0';
+        bars[2].style.transform = 'translateY(-6.5px) rotate(-45deg)';
+      } else {
+        bars[0].style.transform = '';
+        bars[1].style.opacity   = '';
+        bars[2].style.transform = '';
+      }
+    });
+
+    // Close mobile menu on link click
+    links.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        links.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        var bars = toggle.querySelectorAll('span');
+        bars[0].style.transform = '';
+        bars[1].style.opacity   = '';
+        bars[2].style.transform = '';
+      });
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
