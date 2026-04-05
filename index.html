@@ -576,18 +576,14 @@ footer {
   align-items: flex-end;
 }
 
-.about-visual-noise {
+.about-img {
   position: absolute;
   inset: 0;
-  background-image:
-    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(201, 168, 76, 0.07) 0%, transparent 70%),
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(255,255,255,0.015) 2px,
-      rgba(255,255,255,0.015) 4px
-    );
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .about-visual-quote {
@@ -1136,9 +1132,9 @@ footer {
     </div>
   </div>
 
-  <div class="about-visual" aria-hidden="true">
+  <div class="about-visual">
     <div class="about-visual-inner">
-      <div class="about-visual-noise"></div>
+      <img src="https://i.imgur.com/bLmtfxX.jpg" alt="Inside Obsidian barbershop" class="about-img">
       <div class="about-visual-quote">
         <blockquote>"A great barber doesn't just cut hair — they read the room and leave you looking like the best version of yourself."</blockquote>
         <cite>— The Obsidian Standard</cite>
