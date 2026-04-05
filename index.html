@@ -818,113 +818,766 @@ footer {
   color: var(--muted);
 }
 
-/* ── Booking CTA Section ──────────────────────────────────────── */
+/* ── Booking Section ──────────────────────────────────────────── */
 .booking-section {
-  padding: 0 48px 160px;
+  padding: 120px 48px;
 }
 
-.booking-inner {
+.booking-section-header {
   max-width: 1200px;
-  margin: 0 auto;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 100px 80px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+  margin: 0 auto 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
 }
 
-.booking-glow {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+.booking-section-header .section-eyebrow {
+  margin-bottom: 0;
 }
 
-.booking-inner::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.booking-eyebrow {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--primary);
-  margin-bottom: 20px;
-}
-
-.booking-headline {
+.booking-section-header h2 {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(40px, 5vw, 72px);
+  font-size: clamp(36px, 4vw, 60px);
   font-weight: 300;
   color: var(--text);
-  letter-spacing: -0.01em;
   line-height: 1.1;
-  margin-bottom: 20px;
+  margin: 0;
 }
 
-.booking-headline em {
+.booking-section-header h2 em {
   font-style: italic;
   color: var(--primary);
 }
 
-.booking-sub {
-  font-size: 16px;
+/* How It Works */
+.how-it-works {
+  max-width: 1200px;
+  margin: 0 auto 80px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.hiw-step {
+  background: var(--surface);
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hiw-num {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--primary);
+  text-transform: uppercase;
+}
+
+.hiw-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.hiw-desc {
+  font-size: 14px;
   color: var(--muted);
-  max-width: 40ch;
-  margin: 0 auto 48px;
   line-height: 1.7;
   font-weight: 300;
 }
 
-.booking-cta {
-  display: inline-flex;
+/* Main booking layout */
+.booking-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
+  align-items: start;
+}
+
+/* Form card */
+.booking-form-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.booking-form-steps {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+}
+
+.bfs-step {
+  flex: 1;
+  padding: 20px 24px;
+  display: flex;
   align-items: center;
   gap: 10px;
-  padding: 18px 52px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-right: 1px solid var(--border);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.bfs-step:last-child { border-right: none; }
+
+.bfs-step.active {
+  color: var(--primary);
+}
+
+.bfs-step.done {
+  color: var(--text);
+}
+
+.bfs-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.bfs-step.active .bfs-dot {
   background: var(--primary);
+  border-color: var(--primary);
   color: var(--bg);
-  text-decoration: none;
+}
+
+.bfs-step.done .bfs-dot {
+  background: transparent;
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Form panes */
+.booking-form-pane {
+  padding: 40px;
+  display: none;
+}
+
+.booking-form-pane.active { display: block; }
+
+.bfp-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 28px;
+}
+
+/* Service cards */
+.service-picker {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.sp-card {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 18px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  position: relative;
+}
+
+.sp-card:hover {
+  border-color: rgba(201,168,76,0.4);
+}
+
+.sp-card.selected {
+  border-color: var(--primary);
+  background: rgba(201,168,76,0.05);
+}
+
+.sp-card.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 11px;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.sp-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.sp-price {
+  font-size: 13px;
+  color: var(--primary);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.sp-dur {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+
+/* Barber picker */
+.barber-picker {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.bp-card {
+  flex: 1;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 16px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.bp-card:hover { border-color: rgba(201,168,76,0.4); }
+
+.bp-card.selected {
+  border-color: var(--primary);
+  background: rgba(201,168,76,0.05);
+}
+
+.bp-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--border);
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  color: var(--muted);
+}
+
+.bp-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+.bp-spec {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Date/time pane */
+.date-picker-label {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.date-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-bottom: 32px;
+}
+
+.dg-cell {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  border: 1.5px solid transparent;
+  font-size: 12px;
+}
+
+.dg-cell.header {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-transform: uppercase;
+  cursor: default;
+  border: none;
+}
+
+.dg-cell.inactive { color: rgba(255,255,255,0.15); cursor: default; }
+
+.dg-cell.available:hover {
+  border-color: rgba(201,168,76,0.4);
+  background: rgba(201,168,76,0.05);
+}
+
+.dg-cell.selected {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--bg);
+  font-weight: 600;
+}
+
+.dg-day { font-weight: 500; color: var(--text); font-size: 13px; }
+.dg-mon { font-size: 9px; color: var(--muted); margin-top: 1px; }
+
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.tg-slot {
+  padding: 10px 6px;
+  text-align: center;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tg-slot.open { color: var(--text); }
+
+.tg-slot.open:hover {
+  border-color: rgba(201,168,76,0.4);
+  background: rgba(201,168,76,0.05);
+  color: var(--text);
+}
+
+.tg-slot.selected {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--bg);
+}
+
+.tg-slot.closed {
+  opacity: 0.3;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+/* Personal details pane */
+.booking-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.booking-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.booking-field label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.booking-field input,
+.booking-field select,
+.booking-field textarea {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.booking-field input:focus,
+.booking-field select:focus,
+.booking-field textarea:focus {
+  border-color: var(--primary);
+}
+
+.booking-field textarea { resize: vertical; min-height: 80px; }
+
+.booking-field select option { background: #111; }
+
+.booking-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 28px;
+  cursor: pointer;
+}
+
+.booking-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  accent-color: var(--primary);
+}
+
+/* Form navigation buttons */
+.booking-form-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+}
+
+.btn-back {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 12px 28px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-back:hover { border-color: var(--muted); color: var(--text); }
+
+.btn-next {
+  background: var(--primary);
+  border: none;
+  color: var(--bg);
+  padding: 14px 40px;
+  border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  border-radius: 3px;
-  transition: background 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.booking-cta:hover {
+.btn-next:hover {
   background: var(--accent);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 40px rgba(201, 168, 76, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(201,168,76,0.3);
 }
 
-.booking-cta svg {
-  width: 14px;
-  height: 14px;
-  stroke: currentColor;
+/* Confirmation pane */
+.booking-confirm-summary {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 28px;
+}
+
+.bcs-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.bcs-row:last-child { border-bottom: none; }
+
+.bcs-label { color: var(--muted); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+.bcs-value { color: var(--text); font-weight: 500; }
+
+.bcs-value.highlight { color: var(--primary); font-weight: 600; }
+
+/* Success state */
+.booking-success {
+  display: none;
+  padding: 80px 40px;
+  text-align: center;
+}
+
+.booking-success.active { display: block; }
+
+.bs-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1.5px solid var(--primary);
+  margin: 0 auto 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bs-icon svg {
+  width: 28px;
+  height: 28px;
+  stroke: var(--primary);
   fill: none;
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
-  transition: transform 0.2s ease;
 }
 
-.booking-cta:hover svg {
-  transform: translateX(3px);
+.bs-headline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.bs-sub {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 36ch;
+  margin: 0 auto 32px;
+}
+
+/* Info sidebar */
+.booking-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+}
+
+.sidebar-card-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+
+.hours-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.hours-row:last-child { border-bottom: none; }
+
+.hours-day { color: var(--muted); }
+.hours-time { color: var(--text); font-weight: 500; }
+.hours-time.closed { color: rgba(255,255,255,0.25); }
+
+.sidebar-info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-info-row:last-child { border-bottom: none; }
+
+.sidebar-info-icon {
+  width: 16px;
+  height: 16px;
+  stroke: var(--primary);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.sidebar-policies li {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  list-style: none;
+  display: flex;
+  gap: 8px;
+}
+
+.sidebar-policies li::before {
+  content: '—';
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.sidebar-policies li:last-child { border-bottom: none; }
+
+/* FAQ section */
+.faq-section {
+  padding: 0 48px 120px;
+}
+
+.faq-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.faq-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.faq-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 3.5vw, 52px);
+  font-weight: 300;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.faq-header h2 em {
+  font-style: italic;
+  color: var(--primary);
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.faq-item {
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 28px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  transition: color 0.2s ease;
+}
+
+.faq-question:hover { color: var(--primary); }
+
+.faq-question.open { color: var(--primary); }
+
+.faq-icon {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.faq-question.open .faq-icon { transform: rotate(45deg); }
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+
+.faq-answer-inner {
+  padding: 0 32px 28px;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.8;
+  font-weight: 300;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .booking-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .how-it-works {
+    grid-template-columns: 1fr;
+  }
+
+  .service-picker {
+    grid-template-columns: 1fr;
+  }
+
+  .faq-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .date-grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .booking-section { padding: 80px 24px; }
+  .faq-section { padding: 0 24px 80px; }
+  .booking-form-steps { flex-wrap: wrap; }
+  .bfs-step { padding: 14px 16px; font-size: 10px; }
+  .booking-form-pane { padding: 24px; }
+  .booking-field-row { grid-template-columns: 1fr; }
+  .time-grid { grid-template-columns: repeat(3, 1fr); }
+  .barber-picker { flex-wrap: wrap; }
+  .bp-card { min-width: calc(50% - 6px); }
 }
 
 /* ── Footer ───────────────────────────────────────────────────── */
@@ -1403,20 +2056,332 @@ footer {
   </div>
 </section>
 
-<!-- ── Booking CTA ────────────────────────────────────────────────── -->
+<!-- ── Booking ─────────────────────────────────────────────────────── -->
 <section class="booking-section" id="book">
-  <div class="booking-inner">
-    <div class="booking-glow" aria-hidden="true"></div>
-    <p class="booking-eyebrow">Appointments Open Now</p>
-    <h2 class="booking-headline">Your next cut<br><em>starts here</em></h2>
-    <p class="booking-sub">Select your service, choose your time, and show up ready. We handle the rest.</p>
-    <a href="#" class="booking-cta">
-      Book Your Cut
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <line x1="5" y1="12" x2="19" y2="12"/>
-        <polyline points="12 5 19 12 12 19"/>
-      </svg>
-    </a>
+
+  <div class="booking-section-header">
+    <p class="section-eyebrow">Book Your Appointment</p>
+    <h2>Reserve your seat<br><em>in the chair</em></h2>
+  </div>
+
+  <!-- How It Works -->
+  <div class="how-it-works">
+    <div class="hiw-step">
+      <span class="hiw-num">01 — Choose</span>
+      <p class="hiw-title">Pick your service</p>
+      <p class="hiw-desc">Select the cut, add any extras, and let us know your preferred barber. Every slot is one-on-one.</p>
+    </div>
+    <div class="hiw-step">
+      <span class="hiw-num">02 — Schedule</span>
+      <p class="hiw-title">Lock in your time</p>
+      <p class="hiw-desc">Browse available dates and time slots. Real-time availability so you're never double-booked.</p>
+    </div>
+    <div class="hiw-step">
+      <span class="hiw-num">03 — Show up</span>
+      <p class="hiw-title">Walk in, walk out sharp</p>
+      <p class="hiw-desc">You'll receive a confirmation. Arrive on time, skip the wait, and leave looking exactly how you came in to look.</p>
+    </div>
+  </div>
+
+  <!-- Booking Layout -->
+  <div class="booking-layout">
+
+    <!-- Form -->
+    <div class="booking-form-card">
+
+      <!-- Step tabs -->
+      <div class="booking-form-steps" id="bfSteps">
+        <div class="bfs-step active" data-step="1">
+          <span class="bfs-dot">1</span>Service
+        </div>
+        <div class="bfs-step" data-step="2">
+          <span class="bfs-dot">2</span>Date &amp; Time
+        </div>
+        <div class="bfs-step" data-step="3">
+          <span class="bfs-dot">3</span>Your Details
+        </div>
+        <div class="bfs-step" data-step="4">
+          <span class="bfs-dot">4</span>Confirm
+        </div>
+      </div>
+
+      <!-- Pane 1: Service + Barber -->
+      <div class="booking-form-pane active" id="bfPane1">
+        <p class="bfp-title">What are you getting done?</p>
+
+        <div class="service-picker" id="servicePicker">
+          <div class="sp-card" data-service="Classic Cut" data-price="$35" data-dur="45 min">
+            <p class="sp-name">Classic Cut</p>
+            <p class="sp-price">$35</p>
+            <p class="sp-dur">45 min</p>
+          </div>
+          <div class="sp-card" data-service="Fade &amp; Shape" data-price="$45" data-dur="60 min">
+            <p class="sp-name">Fade &amp; Shape</p>
+            <p class="sp-price">$45</p>
+            <p class="sp-dur">60 min</p>
+          </div>
+          <div class="sp-card" data-service="Beard Trim" data-price="$25" data-dur="30 min">
+            <p class="sp-name">Beard Trim</p>
+            <p class="sp-price">$25</p>
+            <p class="sp-dur">30 min</p>
+          </div>
+          <div class="sp-card" data-service="Cut + Beard" data-price="$60" data-dur="75 min">
+            <p class="sp-name">Cut + Beard</p>
+            <p class="sp-price">$60</p>
+            <p class="sp-dur">75 min</p>
+          </div>
+          <div class="sp-card" data-service="Shape-Up" data-price="$20" data-dur="20 min">
+            <p class="sp-name">Shape-Up</p>
+            <p class="sp-price">$20</p>
+            <p class="sp-dur">20 min</p>
+          </div>
+          <div class="sp-card" data-service="Hot Towel Shave" data-price="$50" data-dur="60 min">
+            <p class="sp-name">Hot Towel Shave</p>
+            <p class="sp-price">$50</p>
+            <p class="sp-dur">60 min</p>
+          </div>
+        </div>
+
+        <p class="bfp-title" style="margin-top:8px">Choose your barber</p>
+        <div class="barber-picker" id="barberPicker">
+          <div class="bp-card" data-barber="Marcus">
+            <div class="bp-avatar">M</div>
+            <p class="bp-name">Marcus</p>
+            <p class="bp-spec">Fades & Texture</p>
+          </div>
+          <div class="bp-card" data-barber="Jordan">
+            <div class="bp-avatar">J</div>
+            <p class="bp-name">Jordan</p>
+            <p class="bp-spec">Classic Cuts</p>
+          </div>
+          <div class="bp-card" data-barber="No Preference">
+            <div class="bp-avatar" style="font-size:13px;letter-spacing:0">Any</div>
+            <p class="bp-name">Any Barber</p>
+            <p class="bp-spec">Next Available</p>
+          </div>
+        </div>
+
+        <div class="booking-form-nav">
+          <span></span>
+          <button class="btn-next" onclick="bookingNext(1)">Continue</button>
+        </div>
+      </div>
+
+      <!-- Pane 2: Date & Time -->
+      <div class="booking-form-pane" id="bfPane2">
+        <p class="bfp-title">When works for you?</p>
+
+        <p class="date-picker-label">April 2026</p>
+        <div class="date-grid" id="dateGrid">
+          <!-- headers -->
+          <div class="dg-cell header">Sun</div>
+          <div class="dg-cell header">Mon</div>
+          <div class="dg-cell header">Tue</div>
+          <div class="dg-cell header">Wed</div>
+          <div class="dg-cell header">Thu</div>
+          <div class="dg-cell header">Fri</div>
+          <div class="dg-cell header">Sat</div>
+        </div>
+
+        <p class="date-picker-label" style="margin-top:8px" id="timeLabel">Available times</p>
+        <div class="time-grid" id="timeGrid"></div>
+
+        <div class="booking-form-nav">
+          <button class="btn-back" onclick="bookingBack(2)">Back</button>
+          <button class="btn-next" onclick="bookingNext(2)">Continue</button>
+        </div>
+      </div>
+
+      <!-- Pane 3: Personal Details -->
+      <div class="booking-form-pane" id="bfPane3">
+        <p class="bfp-title">Your details</p>
+
+        <div class="booking-field-row">
+          <div class="booking-field">
+            <label for="bf-first">First Name</label>
+            <input id="bf-first" type="text" placeholder="Marcus" />
+          </div>
+          <div class="booking-field">
+            <label for="bf-last">Last Name</label>
+            <input id="bf-last" type="text" placeholder="Williams" />
+          </div>
+        </div>
+
+        <div class="booking-field">
+          <label for="bf-phone">Phone Number</label>
+          <input id="bf-phone" type="tel" placeholder="+1 (555) 000-0000" />
+        </div>
+
+        <div class="booking-field">
+          <label for="bf-email">Email Address</label>
+          <input id="bf-email" type="email" placeholder="you@example.com" />
+        </div>
+
+        <div class="booking-field">
+          <label for="bf-notes">Notes (optional)</label>
+          <textarea id="bf-notes" placeholder="Any requests or references — bring a photo if you have one."></textarea>
+        </div>
+
+        <label class="booking-checkbox">
+          <input type="checkbox" id="bf-sms" checked />
+          Send me a confirmation text reminder 24 hours before my appointment.
+        </label>
+
+        <div class="booking-form-nav">
+          <button class="btn-back" onclick="bookingBack(3)">Back</button>
+          <button class="btn-next" onclick="bookingNext(3)">Review Booking</button>
+        </div>
+      </div>
+
+      <!-- Pane 4: Confirm -->
+      <div class="booking-form-pane" id="bfPane4">
+        <p class="bfp-title">Review & confirm</p>
+
+        <div class="booking-confirm-summary" id="bfSummary">
+          <div class="bcs-row"><span class="bcs-label">Service</span><span class="bcs-value highlight" id="sum-service">—</span></div>
+          <div class="bcs-row"><span class="bcs-label">Barber</span><span class="bcs-value" id="sum-barber">—</span></div>
+          <div class="bcs-row"><span class="bcs-label">Date</span><span class="bcs-value" id="sum-date">—</span></div>
+          <div class="bcs-row"><span class="bcs-label">Time</span><span class="bcs-value" id="sum-time">—</span></div>
+          <div class="bcs-row"><span class="bcs-label">Duration</span><span class="bcs-value" id="sum-dur">—</span></div>
+          <div class="bcs-row"><span class="bcs-label">Name</span><span class="bcs-value" id="sum-name">—</span></div>
+          <div class="bcs-row"><span class="bcs-label">Price</span><span class="bcs-value highlight" id="sum-price">—</span></div>
+        </div>
+
+        <div class="booking-form-nav">
+          <button class="btn-back" onclick="bookingBack(4)">Edit</button>
+          <button class="btn-next" onclick="bookingSubmit()">Confirm Appointment</button>
+        </div>
+      </div>
+
+      <!-- Success -->
+      <div class="booking-success" id="bfSuccess">
+        <div class="bs-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <p class="bs-headline">You're all set.</p>
+        <p class="bs-sub">A confirmation will be sent to your email and phone. We'll see you soon — arrive 5 minutes early.</p>
+        <button class="btn-next" onclick="bookingReset()" style="margin:0 auto;display:block">Book Another</button>
+      </div>
+
+    </div><!-- /booking-form-card -->
+
+    <!-- Sidebar -->
+    <aside class="booking-sidebar">
+
+      <div class="sidebar-card">
+        <p class="sidebar-card-title">Hours</p>
+        <div class="hours-row"><span class="hours-day">Monday</span><span class="hours-time">9:00 AM – 7:00 PM</span></div>
+        <div class="hours-row"><span class="hours-day">Tuesday</span><span class="hours-time">9:00 AM – 7:00 PM</span></div>
+        <div class="hours-row"><span class="hours-day">Wednesday</span><span class="hours-time">9:00 AM – 7:00 PM</span></div>
+        <div class="hours-row"><span class="hours-day">Thursday</span><span class="hours-time">9:00 AM – 8:00 PM</span></div>
+        <div class="hours-row"><span class="hours-day">Friday</span><span class="hours-time">9:00 AM – 8:00 PM</span></div>
+        <div class="hours-row"><span class="hours-day">Saturday</span><span class="hours-time">8:00 AM – 6:00 PM</span></div>
+        <div class="hours-row"><span class="hours-day">Sunday</span><span class="hours-time closed">Closed</span></div>
+      </div>
+
+      <div class="sidebar-card">
+        <p class="sidebar-card-title">Find Us</p>
+        <div class="sidebar-info-row">
+          <svg class="sidebar-info-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span>142 Obsidian Ave, Suite 3<br>New York, NY 10001</span>
+        </div>
+        <div class="sidebar-info-row">
+          <svg class="sidebar-info-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.42 12.07 19.79 19.79 0 01.36 3.49 2 2 0 012.33 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 8.37a16 16 0 006.72 6.72l1.73-.86a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+          <span>(212) 555-0178</span>
+        </div>
+        <div class="sidebar-info-row">
+          <svg class="sidebar-info-icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+          <span>hello@obsidianbarbershop.com</span>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <p class="sidebar-card-title">Good to Know</p>
+        <ul class="sidebar-policies">
+          <li>Appointments confirmed 24 hrs before via text</li>
+          <li>Cancel or reschedule up to 4 hours in advance</li>
+          <li>Walk-ins welcome if slots are open</li>
+          <li>Gift cards available — ask at the counter</li>
+          <li>We accept card, cash, and contactless pay</li>
+        </ul>
+      </div>
+
+    </aside>
+
+  </div><!-- /booking-layout -->
+
+</section>
+
+<!-- ── FAQ ────────────────────────────────────────────────────────── -->
+<section class="faq-section">
+  <div class="faq-inner">
+    <div class="faq-header">
+      <h2>Questions<br><em>answered</em></h2>
+      <p class="section-eyebrow" style="margin:0">FAQ</p>
+    </div>
+    <div class="faq-grid">
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Do I need an appointment?
+          <svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Appointments are preferred and guarantee your slot. Walk-ins are welcome when chairs are open, but during peak hours (Friday–Saturday) we recommend booking ahead so you're not waiting.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          What's your cancellation policy?
+          <svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">We ask that you cancel or reschedule at least 4 hours before your appointment. No-shows more than twice may require a deposit for future bookings. We understand life happens — just let us know.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          How long does a typical cut take?
+          <svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">A classic cut runs 45 minutes. Fades and shaped cuts are 60 minutes. If you're adding a beard trim or hot towel shave, budget 75–90 minutes total. We don't rush — every client gets full attention.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Can I request a specific barber?
+          <svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Absolutely. When booking, select your preferred barber from the form. If they're unavailable at your preferred time, you'll see the next open slot. You can also choose "Any Barber" for the fastest available appointment.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Do you do kids' haircuts?
+          <svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Yes — children 12 and under are $25 for a classic cut. We're patient with younger clients. Booking ahead is recommended so we can match you with the right barber and pace the appointment appropriately.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          What payment methods do you accept?
+          <svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">We accept all major credit and debit cards, cash, Apple Pay, and Google Pay. Tips are appreciated and can be added digitally or left in cash at checkout.</div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
 
@@ -1456,6 +2421,221 @@ footer {
 
 <!-- ── Scripts ────────────────────────────────────────────────────── -->
 <script>
+/* ─────────────────────────────────────────────────────────────────
+   BOOKING SYSTEM
+   Multi-step form: Service → Date/Time → Details → Confirm → Success
+   Pure JS, no backend. Demo purposes only.
+   ───────────────────────────────────────────────────────────────── */
+(function () {
+  var state = {
+    service: null, price: null, dur: null,
+    barber: null,
+    date: null, dateLabel: null,
+    time: null,
+  };
+
+  /* ── Service picker ── */
+  document.querySelectorAll('.sp-card').forEach(function (card) {
+    card.addEventListener('click', function () {
+      document.querySelectorAll('.sp-card').forEach(function (c) { c.classList.remove('selected'); });
+      card.classList.add('selected');
+      state.service = card.dataset.service;
+      state.price   = card.dataset.price;
+      state.dur     = card.dataset.dur;
+    });
+  });
+
+  /* ── Barber picker ── */
+  document.querySelectorAll('.bp-card').forEach(function (card) {
+    card.addEventListener('click', function () {
+      document.querySelectorAll('.bp-card').forEach(function (c) { c.classList.remove('selected'); });
+      card.classList.add('selected');
+      state.barber = card.dataset.barber;
+    });
+  });
+
+  /* ── Build date calendar ── */
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var fullMonths = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  function buildCalendar() {
+    var grid = document.getElementById('dateGrid');
+    var today = new Date(2026, 3, 5); // April 5, 2026 (demo)
+    var year = 2026, month = 3;
+    var firstDay = new Date(year, month, 1).getDay();
+    var daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    document.querySelector('.date-picker-label').textContent = fullMonths[month] + ' ' + year;
+
+    // Remove existing day cells (keep headers)
+    var headers = Array.from(grid.querySelectorAll('.dg-cell.header'));
+    grid.innerHTML = '';
+    headers.forEach(function (h) { grid.appendChild(h); });
+
+    // Blank cells for offset
+    for (var i = 0; i < firstDay; i++) {
+      var blank = document.createElement('div');
+      blank.className = 'dg-cell inactive';
+      grid.appendChild(blank);
+    }
+
+    for (var d = 1; d <= daysInMonth; d++) {
+      var cell = document.createElement('div');
+      var date = new Date(year, month, d);
+      var isPast = date < today;
+      var isSunday = date.getDay() === 0;
+      cell.className = 'dg-cell ' + (isPast || isSunday ? 'inactive' : 'available');
+
+      cell.innerHTML = '<span class="dg-day">' + d + '</span><span class="dg-mon">' + months[month] + '</span>';
+
+      if (!isPast && !isSunday) {
+        (function(day, dateObj) {
+          cell.addEventListener('click', function () {
+            document.querySelectorAll('.dg-cell.available').forEach(function (c) { c.classList.remove('selected'); });
+            cell.classList.add('selected');
+            var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+            state.date = dateObj;
+            state.dateLabel = days[dateObj.getDay()] + ', ' + fullMonths[month] + ' ' + day;
+            buildTimes(dateObj.getDay());
+          });
+        })(d, date);
+      }
+
+      grid.appendChild(cell);
+    }
+  }
+
+  function buildTimes(dayOfWeek) {
+    var grid = document.getElementById('timeGrid');
+    var label = document.getElementById('timeLabel');
+    grid.innerHTML = '';
+    state.time = null;
+
+    // Thu/Fri have later slots
+    var slots = dayOfWeek === 4 || dayOfWeek === 5
+      ? ['9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM','6:30 PM','7:00 PM','7:30 PM']
+      : dayOfWeek === 6
+      ? ['8:00 AM','8:30 AM','9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM']
+      : ['9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM','6:30 PM'];
+
+    // Randomly close ~30% of slots (consistent demo pattern)
+    var closed = [1,4,7,11,14,17];
+
+    label.textContent = state.dateLabel ? 'Available times — ' + state.dateLabel : 'Available times';
+
+    slots.forEach(function (slot, idx) {
+      var el = document.createElement('div');
+      var isC = closed.indexOf(idx) !== -1;
+      el.className = 'tg-slot ' + (isC ? 'closed' : 'open');
+      el.textContent = slot;
+
+      if (!isC) {
+        el.addEventListener('click', function () {
+          document.querySelectorAll('.tg-slot.open').forEach(function (s) { s.classList.remove('selected'); });
+          el.classList.add('selected');
+          state.time = slot;
+        });
+      }
+
+      grid.appendChild(el);
+    });
+  }
+
+  buildCalendar();
+  buildTimes(1); // Default Mon
+
+  /* ── Step navigation ── */
+  window.bookingNext = function (step) {
+    // Validate
+    if (step === 1) {
+      if (!state.service) { alert('Please select a service.'); return; }
+      if (!state.barber)  { alert('Please choose a barber.'); return; }
+    }
+    if (step === 2) {
+      if (!state.date)  { alert('Please select a date.'); return; }
+      if (!state.time)  { alert('Please select a time slot.'); return; }
+    }
+    if (step === 3) {
+      var first = document.getElementById('bf-first').value.trim();
+      var last  = document.getElementById('bf-last').value.trim();
+      var phone = document.getElementById('bf-phone').value.trim();
+      var email = document.getElementById('bf-email').value.trim();
+      if (!first || !last) { alert('Please enter your full name.'); return; }
+      if (!phone && !email) { alert('Please enter a phone number or email.'); return; }
+      state.name = first + ' ' + last;
+    }
+    if (step === 4) {
+      return; // submit handled separately
+    }
+    goToStep(step + 1);
+  };
+
+  window.bookingBack = function (step) {
+    goToStep(step - 1);
+  };
+
+  function goToStep(n) {
+    document.querySelectorAll('.booking-form-pane').forEach(function (p) { p.classList.remove('active'); });
+    document.getElementById('bfPane' + n).classList.add('active');
+
+    document.querySelectorAll('.bfs-step').forEach(function (s) {
+      var sn = parseInt(s.dataset.step, 10);
+      s.classList.remove('active','done');
+      if (sn === n) s.classList.add('active');
+      else if (sn < n) s.classList.add('done');
+    });
+
+    if (n === 4) populateSummary();
+  }
+
+  function populateSummary() {
+    document.getElementById('sum-service').textContent = state.service || '—';
+    document.getElementById('sum-barber').textContent  = state.barber || '—';
+    document.getElementById('sum-date').textContent    = state.dateLabel || '—';
+    document.getElementById('sum-time').textContent    = state.time || '—';
+    document.getElementById('sum-dur').textContent     = state.dur || '—';
+    document.getElementById('sum-name').textContent    = state.name || '—';
+    document.getElementById('sum-price').textContent   = state.price || '—';
+  }
+
+  window.bookingSubmit = function () {
+    document.querySelectorAll('.booking-form-pane').forEach(function (p) { p.classList.remove('active'); });
+    document.getElementById('bfSteps').style.display = 'none';
+    document.getElementById('bfSuccess').classList.add('active');
+  };
+
+  window.bookingReset = function () {
+    state = { service: null, price: null, dur: null, barber: null, date: null, dateLabel: null, time: null };
+    document.querySelectorAll('.sp-card, .bp-card, .dg-cell, .tg-slot').forEach(function (el) { el.classList.remove('selected'); });
+    document.getElementById('bf-first').value = '';
+    document.getElementById('bf-last').value  = '';
+    document.getElementById('bf-phone').value = '';
+    document.getElementById('bf-email').value = '';
+    document.getElementById('bf-notes').value = '';
+    document.getElementById('bfSuccess').classList.remove('active');
+    document.getElementById('bfSteps').style.display = '';
+    goToStep(1);
+  };
+
+  /* ── FAQ accordion ── */
+  window.toggleFaq = function (btn) {
+    var answer = btn.nextElementSibling;
+    var isOpen = btn.classList.contains('open');
+
+    // Close all
+    document.querySelectorAll('.faq-question.open').forEach(function (q) {
+      q.classList.remove('open');
+      q.nextElementSibling.style.maxHeight = null;
+    });
+
+    // Open clicked (if it was closed)
+    if (!isOpen) {
+      btn.classList.add('open');
+      answer.style.maxHeight = answer.scrollHeight + 'px';
+    }
+  };
+})();
+
 /* ─────────────────────────────────────────────────────────────────
    MODULE 1: Mesh Gradient Background
    Fixed canvas fills the entire viewport as the bottom-most layer.
